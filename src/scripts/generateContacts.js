@@ -1,3 +1,24 @@
-const generateContacts = async (number) => {};
+import { readContacts } from '../utils/readContacts.js';
+import { writeContacts } from '../utils/writeContacts.js';
+import { createFakeContact } from '../utils/createFakeContact.js';
+ 
+const generateContacts = async (number) => {
+  try { 
+    const existingContacts = await readContacts();
+ 
+    const newContacts = [];
+    for (let i = 0; i < number; i++) {
+      newContacts.push(createFakeContact());
+    }
+ 
+    const allContacts = [...existingContacts, ...newContacts];
+ 
+    await writeContacts(allContacts);
 
-generateContacts(5);
+    console.log(`Успішно згенеровано та додано ${number} нових контактів.`);
+  } catch (error) {
+    console.error('Помилка при генерації контактів:', error);
+  }
+};
+ 
+await generateContacts(5);
